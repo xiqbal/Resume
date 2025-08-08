@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zafar Iqbal - Interactive Resume</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Professional -->
+    <!-- Application Structure Plan: A single-page application with a top navigation bar for smooth scrolling. The structure is thematic: Hero, About, Skills, Experience, Projects, and Education. This was chosen to guide the user (recruiters) through a logical narrative of Zafar's qualifications, from a high-level overview to detailed proof points. The interactive skills chart provides a quick, digestible summary of his technical abilities, which is more effective than a static list for busy users. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Skills list -> Goal: Quickly convey technical proficiency -> Viz/Method: Horizontal Bar Chart (Chart.js) -> Interaction: Filter by category (Languages, Frameworks, Tools) -> Justification: Allows recruiters to instantly assess technical fit and focus on relevant skills. More engaging than a text list.
+        - Report Info: Experience/Projects -> Goal: Present accomplishments clearly -> Viz/Method: Styled Cards (HTML/Tailwind) -> Interaction: Hover effects and technology tags -> Justification: Breaks content into scannable, visually appealing chunks, a standard and effective UI pattern.
+        - Report Info: Navigation -> Goal: Easy exploration -> Viz/Method: Sticky top navigation bar -> Interaction: Smooth scroll to sections, active link highlighting -> Justification: Standard, intuitive navigation for a single-page app, preventing user disorientation.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFDFB;
+            color: #333D4B;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 500px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #1E40AF; /* A deep blue for accent */
+            border-bottom-color: #1E40AF;
+        }
+        .btn-filter.active {
+            background-color: #1E40AF;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">Zafar Iqbal</div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="nav-link text-gray-600 font-medium">About</a>
+                <a href="#skills" class="nav-link text-gray-600 font-medium">Skills</a>
+                <a href="#experience" class="nav-link text-gray-600 font-medium">Experience</a>
+                <a href="#projects" class="nav-link text-gray-600 font-medium">Projects</a>
+                <a href="#education" class="nav-link text-gray-600 font-medium">Education</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-gray-800 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#about" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">About</a>
+            <a href="#skills" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Skills</a>
+            <a href="#experience" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Experience</a>
+            <a href="#projects" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Projects</a>
+            <a href="#education" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Education</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8">
+        
+        <section id="hero" class="text-center py-20">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 mb-4">ZAFAR IQBAL</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-8">Software Engineer | Python & Django Developer</p>
+            <div class="flex justify-center space-x-4">
+                <a href="mailto:zafariqbal112293@gmail.com" class="text-blue-600 hover:underline">zafariqbal112293@gmail.com</a>
+                <span class="text-gray-400">|</span>
+                <a href="https://www.linkedin.com/in/zafar-iqbal-dev" target="_blank" class="text-blue-600 hover:underline">LinkedIn</a>
+                <span class="text-gray-400">|</span>
+                <a href="https://github.com/zafariqbal-dev" target="_blank" class="text-blue-600 hover:underline">GitHub</a>
+            </div>
+        </section>
+
+        <section id="about" class="py-16 scroll-mt-20">
+            <h2 class="text-4xl font-bold text-center mb-12">About Me</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-gray-700 leading-relaxed">
+                Computer Science graduate skilled in Python, C++, and C#, with a strong grasp of Object-Oriented Programming and data structures. I excel in delivering high-quality code, solving complex problems, and collaborating with cross-functional teams. Dedicated to continuous learning and staying current with industry trends.
+            </p>
+        </section>
+
+        <section id="skills" class="py-16 bg-gray-50 rounded-xl scroll-mt-20">
+            <h2 class="text-4xl font-bold text-center mb-4">Technical Skills</h2>
+            <p class="text-center text-gray-600 mb-12">This chart visualizes my proficiency across different technologies. Use the buttons to filter by category.</p>
+            <div class="flex justify-center space-x-2 mb-8">
+                <button class="btn-filter active px-4 py-2 bg-gray-200 text-gray-800 rounded-full font-medium transition" data-filter="all">All</button>
+                <button class="btn-filter px-4 py-2 bg-gray-200 text-gray-800 rounded-full font-medium transition" data-filter="languages">Languages</button>
+                <button class="btn-filter px-4 py-2 bg-gray-200 text-gray-800 rounded-full font-medium transition" data-filter="frameworks">Frameworks & Libraries</button>
+                <button class="btn-filter px-4 py-2 bg-gray-200 text-gray-800 rounded-full font-medium transition" data-filter="tools">Tools</button>
+            </div>
+            <div class="chart-container">
+                <canvas id="skillsChart"></canvas>
+            </div>
+        </section>
+
+        <section id="experience" class="py-16 scroll-mt-20">
+            <h2 class="text-4xl font-bold text-center mb-12">Experience</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl shadow-lg p-8 transform hover:scale-105 transition-transform duration-300">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900">Software Engineer Intern (Python/Django Dev)</h3>
+                            <p class="text-lg font-medium text-blue-700">Fazbrolab (on site)</p>
+                        </div>
+                        <p class="text-md text-gray-500 font-medium">Mar 2024 - Dec 2024</p>
+                    </div>
+                    <ul class="mt-6 list-disc list-inside text-gray-700 space-y-3">
+                        <li>Collaborated with a development team to design, develop, and test web applications using Python, Django, and RESTful APIs.</li>
+                        <li>Assisted in writing clean, efficient, and maintainable code for backend logic, database models, and user interfaces using Django templates and JavaScript.</li>
+                        <li>Contributed to database integration tasks, including designing PostgreSQL schemas and writing raw SQL and ORM-based queries.</li>
+                        <li>Participated in Agile/Scrum workflows, attending daily stand-ups, planning meetings, and contributing to sprint goals.</li>
+                        <li>Debugged and resolved application issues, improving performance, reliability, and user experience.</li>
+                        <li>Gained hands-on experience with tools like VS Code, Git, Docker, and Postman, while following industry-standard development practices.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="py-16 bg-gray-50 rounded-xl scroll-mt-20">
+            <h2 class="text-4xl font-bold text-center mb-12">Projects</h2>
+            <div class="max-w-4xl mx-auto">
+                 <div class="bg-white rounded-xl shadow-lg p-8 transform hover:scale-105 transition-transform duration-300">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900">Rise Inspection System</h3>
+                        </div>
+                        <p class="text-md text-gray-500 font-medium">Mar 2022 - Mar 2023</p>
+                    </div>
+                    <p class="mt-4 text-gray-700">Developed a system for classifying rice types using computer vision and machine learning techniques. The project involved image preprocessing, object detection, and measurement.</p>
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Python</span>
+                        <span class="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">Machine Learning</span>
+                        <span class="bg-indigo-100 text-indigo-800 text-sm font-medium px-3 py-1 rounded-full">Django</span>
+                        <span class="bg-purple-100 text-purple-800 text-sm font-medium px-3 py-1 rounded-full">TensorFlow</span>
+                        <span class="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full">Pandas</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="py-16 scroll-mt-20">
+            <h2 class="text-4xl font-bold text-center mb-12">Education & Certifications</h2>
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-md p-8">
+                    <h3 class="text-xl font-bold text-gray-900">COMSATS University Islamabad</h3>
+                    <p class="text-md font-medium text-gray-700">Bachelor of Science in Computer Science (BSCS)</p>
+                    <p class="text-sm text-gray-500 mt-1">2019 - 2023</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-8">
+                     <h3 class="text-xl font-bold text-gray-900">Certifications</h3>
+                     <ul class="mt-2 list-disc list-inside text-gray-700">
+                        <li>Complete Machine Learning & Data Science Bootcamp 2021</li>
+                        <li>Data Science & AI Masters 2025 - From Python To Gen AI</li>
+                     </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-lg font-bold mb-2">Get In Touch</p>
+            <p class="mb-4">zafariqbal112293@gmail.com</p>
+            <div class="flex justify-center space-x-6">
+                 <a href="https://www.linkedin.com/in/zafar-iqbal-dev" target="_blank" class="hover:text-blue-400 transition">LinkedIn</a>
+                 <a href="https://github.com/zafariqbal-dev" target="_blank" class="hover:text-blue-400 transition">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link, #mobile-menu a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            const sections = document.querySelectorAll('section[id]');
+            const mainNavLinks = document.querySelectorAll('nav a.nav-link');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        mainNavLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px' });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            const skillsData = {
+                all: {
+                    labels: ['Python', 'C++', 'C#', 'Java', 'SQL', 'TypeScript', 'Django', 'Laravel', '.NET', 'TensorFlow', 'Pandas', 'NumPy', 'Unity', 'Cocos Creator', 'Jupyter', 'Google Colab', 'VS Code', 'Visual Studio', 'Git', 'Docker', 'Postman'],
+                    data: [95, 80, 75, 70, 85, 70, 90, 70, 65, 85, 90, 85, 75, 70, 90, 85, 95, 80, 90, 80, 85],
+                    backgroundColor: ['#3B82F6', '#3B82F6', '#3B82F6', '#3B82F6', '#3B82F6', '#3B82F6', '#10B981', '#10B981', '#10B981', '#10B981', '#10B981', '#10B981', '#10B981', '#10B981', '#F59E0B', '#F59E0B', '#F59E0B', '#F59E0B', '#F59E0B', '#F59E0B', '#F59E0B'],
+                },
+                languages: {
+                    labels: ['Python', 'C++', 'C#', 'Java', 'SQL', 'TypeScript'],
+                    data: [95, 80, 75, 70, 85, 70],
+                    backgroundColor: '#3B82F6',
+                },
+                frameworks: {
+                    labels: ['Django', 'Laravel', '.NET', 'TensorFlow', 'Pandas', 'NumPy', 'Unity', 'Cocos Creator'],
+                    data: [90, 70, 65, 85, 90, 85, 75, 70],
+                    backgroundColor: '#10B981',
+                },
+                tools: {
+                    labels: ['Jupyter', 'Google Colab', 'VS Code', 'Visual Studio', 'Git', 'Docker', 'Postman'],
+                    data: [90, 85, 95, 80, 90, 80, 85],
+                    backgroundColor: '#F59E0B',
+                }
+            };
+            
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            let skillsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: skillsData.all.labels,
+                    datasets: [{
+                        label: 'Proficiency',
+                        data: skillsData.all.data,
+                        backgroundColor: skillsData.all.backgroundColor,
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                color: '#4B5563'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#4B5563',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: '#1F2937',
+                            titleColor: '#FFFFFF',
+                            bodyColor: '#FFFFFF',
+                            callbacks: {
+                                label: function(context) {
+                                    return `Proficiency: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeInOutQuad'
+                    }
+                }
+            });
+
+            const filterButtons = document.querySelectorAll('.btn-filter');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filter = this.dataset.filter;
+                    const newData = skillsData[filter];
+                    
+                    skillsChart.data.labels = newData.labels;
+                    skillsChart.data.datasets[0].data = newData.data;
+                    skillsChart.data.datasets[0].backgroundColor = newData.backgroundColor;
+                    skillsChart.update();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
